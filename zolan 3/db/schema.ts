@@ -1,0 +1,5 @@
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+export const leads=sqliteTable("leads",{email:text("email").primaryKey(),createdAt:integer("created_at").notNull(),updatedAt:integer("updated_at").notNull(),consent:integer("consent").notNull(),consentVersion:text("consent_version").notNull(),pageVersion:text("page_version").notNull(),source:text("source").notNull(),attribution:text("attribution").notNull()});
+export const access=sqliteTable("access",{tokenHash:text("token_hash").primaryKey(),expiresAt:integer("expires_at").notNull()});
+export const limits=sqliteTable("limits",{key:text("key").primaryKey(),count:integer("count").notNull(),expiresAt:integer("expires_at").notNull()});
+export const events=sqliteTable("events",{id:integer("id").primaryKey({autoIncrement:true}),name:text("name").notNull(),createdAt:integer("created_at").notNull(),version:text("version").notNull(),attribution:text("attribution").notNull()});

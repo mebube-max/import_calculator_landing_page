@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {calculate,sample} from '../lib/calculator.ts';
+test('verified 100-bag fixture',()=>{const r=calculate(sample);assert.equal(r.supplier,880000);assert.equal(r.upfront,1660000);assert.equal(r.landed,16600);assert.equal(r.contribution,4400);assert.equal(r.recovery,80);assert.equal(r.margin,17.599999999999998);assert.equal(r.targetPrice,25750)});
+test('damaged stock changes landed cost and contribution',()=>{const r=calculate({...sample,sellable:80});assert.equal(r.landed,20750);assert.equal(r.contribution,250)});
+test('cash recovery uses sale proceeds after variable selling costs',()=>{const r=calculate({...sample,sell:4000});assert.equal(r.recovery,null);assert.ok(r.contribution<0)});
+test('FX and freight increase reduce contribution',()=>{const baseline=calculate(sample);assert.ok(calculate({...sample,fx:242}).contribution<baseline.contribution);assert.ok(calculate({...sample,freight:600000}).contribution<baseline.contribution)});
+test('fixed operating costs do not alter contribution or shipment recovery',()=>{const r=calculate({...sample,fixed:100000});assert.equal(r.contribution,4400);assert.equal(r.recovery,80);assert.equal(r.operating,340000)});

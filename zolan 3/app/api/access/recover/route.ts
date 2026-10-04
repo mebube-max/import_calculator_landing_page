@@ -1,0 +1,2 @@
+import {cookie,hasAccess} from "../../../../lib/access";
+export async function GET(req:Request){const u=new URL(req.url);const t=u.searchParams.get("token")||"";if(!await hasAccess(t))return Response.redirect(u.origin+"/tools/china-import-profit-calculator?access=expired",303);return new Response(null,{status:303,headers:{Location:u.origin+"/tools/china-import-profit-calculator/calculate","Set-Cookie":cookie(t,30*86400,u.protocol==="https:"),"Referrer-Policy":"no-referrer","Cache-Control":"no-store"}})}

@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {deliverAccess} from '../lib/email.ts';
+const cfg={EMAIL_API_KEY:'test-key',EMAIL_FROM:'calculator@example.test'};
+test('missing provider never pretends delivery',async()=>assert.equal(await deliverAccess({},'qa@example.test','https://example.test/access'),false));
+test('provider failures resolve without blocking access handler',async()=>{assert.equal(await deliverAccess(cfg,'qa@example.test','https://example.test/access',async()=>new Response('',{status:503})),false);assert.equal(await deliverAccess(cfg,'qa@example.test','https://example.test/access',async()=>{throw Error('offline')}),false)});
+test('transactional email includes opaque access link and no marketing',async()=>{let b;assert.equal(await deliverAccess(cfg,'qa@example.test','https://example.test/access?token=opaque',async(u,o)=>{b=JSON.parse(o.body);return new Response('{}',{status:200})}),true);assert.match(b.text,/token=opaque/);assert.equal(b.subject,'Your Zolan import calculator access');assert.doesNotMatch(b.text,/subscribe|marketing/i)});
