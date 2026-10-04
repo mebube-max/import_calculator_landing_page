@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/tools/china-import-profit-calculator", "destination": "/index.html" },
+    { "source": "/tools/china-import-profit-calculator/", "destination": "/index.html" }
+  ]
+}
